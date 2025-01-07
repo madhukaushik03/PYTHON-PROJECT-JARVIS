@@ -1,10 +1,14 @@
 import speech_recognition as sr
 import webbrowser
 import pyttsx3 #text-to-speech
+import musicLibrary
+import requests
+
 
 # recogniser = sr.Recognizer()
 engine = pyttsx3.init()
-
+apikey = "bedd6e9ac06c4e0285327a36efe76f1c" #api key
+# bedd6e9ac06c4e0285327a36efe76f1c
 def speak(text):
     engine.say(text) 
     engine.runAndWait()
@@ -12,18 +16,43 @@ def speak(text):
 def processCommand(c):
     if "open google" in c.lower():
         webbrowser.open("https://www.google.com/")
-    if "open youtube" in c.lower():
+    elif "open youtube" in c.lower():
         webbrowser.open("https://www.youtube.com/")
-    if "open facebook" in c.lower():
+    elif "open facebook" in c.lower():
         webbrowser.open("https://www.facebook.com/")
-    if "open instagram" in c.lower():
+    elif "open instagram" in c.lower():
         webbrowser.open("https://www.instagram.com/")
-    if "open linkedin" in c.lower():
+    elif "open linkedin" in c.lower():
         webbrowser.open("https://www.linkedin.com/")
-    if "close google" in c.lower():
+    # elif "close google" in c.lower():
+    #     pass
+    elif c.lower().startswith("play"):
+        song = c.lower().split(" ")[1]
+        link = musicLibrary.favsongs[song]
+        webbrowser.open(link)
+    elif "news" in c.lower():
+        r = requests.get("https://newsapi.org/v2/top-headlines?country=us&apiKey=bedd6e9ac06c4e0285327a36efe76f1c")
+        # Ensure the request was successful
+        if r.status_code == 200:
+            # Parse the JSON respose
+            data = r.json()
+            
+            # Extract articles
+            articles = data.get('articles', [])
+            titles = [article['title'] for article in articles if 'title' in article]
+            
+            # speak all headlines
+            for title in titles:
+                speak(title)
+        # else:
+        #     print(f"Failed to fetch data: {r.status_code}")
+    else:
+        #intergration with openAI and let openai handle the request
         pass
-
     
+
+
+   
 
 if __name__ == "__main__":
     speak("Initializing Jarvis...")
