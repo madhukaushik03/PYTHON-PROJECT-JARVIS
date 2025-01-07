@@ -7,6 +7,8 @@ import requests
 
 # recogniser = sr.Recognizer()
 engine = pyttsx3.init()
+engine.setProperty('rate', 150)  # Speed (words per minute)
+engine.setProperty('volume', 1.0)  # Volume level between 0.0 and 1.0
 apikey = "bedd6e9ac06c4e0285327a36efe76f1c" #api key
 # bedd6e9ac06c4e0285327a36efe76f1c
 def speak(text):
@@ -49,13 +51,13 @@ def processCommand(c):
     else:
         #intergration with openAI and let openai handle the request
         pass
-    
+
 
 
    
 
 if __name__ == "__main__":
-    speak("Initializing Jarvis...")
+    speak("...Initializing Jarvis")
     
     while True:
         #listen for the wake word- Jarvis
